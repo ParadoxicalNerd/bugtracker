@@ -1,6 +1,5 @@
-import { PrismaClient, User } from "@prisma/client";
-import { Express } from "express";
-import { Context, IRequestUser } from "src/decleration";
+import { User } from "@prisma/client";
+import { Context } from "../decleration";
 import {
     ProjectCreateInput,
     ProjectUpdateInput,

@@ -4,17 +4,16 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import expressSession from "express-session";
-// Session Config
 import Redis from "ioredis";
 import morgan from "morgan";
 import passport from "passport";
-import authRouter, { secured } from "./auth";
-import { resolvers } from "./resolvers";
+dotenv.config();
 
 const fs = require("fs");
 const path = require("path");
 
-dotenv.config();
+import authRouter, { secured } from "./auth";
+import { resolvers } from "./resolvers";
 
 const PORT = process.env.PORT || 4000;
 

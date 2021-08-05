@@ -7,7 +7,7 @@
     },
     "scripts": {
         "start": "node dist",
-        "build": "cd react-ui/ && npm install && npm run build",
+        "build": "cd react-ui/ && yarn && yarn build",
         "watch": "tsc -w",
         "dev": "nodemon dist/index.js",
         "migrate": "npx prisma migrate dev --name",

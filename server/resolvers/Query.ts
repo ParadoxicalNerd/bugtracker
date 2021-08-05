@@ -1,5 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-import { Context } from "src/decleration";
+import { Context } from "../decleration";
 
 export default {
     project: (_parent: any, args: { id: string }, context: Context) =>
