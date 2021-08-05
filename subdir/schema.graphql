@@ -1,0 +1,140 @@
+scalar Date
+
+type Project {
+    id: ID!
+    name: String!
+    description: String
+    author: User!
+    associatedUsers: [User]
+    tickets: [Ticket]
+    creationDate: Date!
+    updateDate: Date!
+}
+
+enum TicketTypes {
+    BUG
+    FEATURE
+    DOCS
+}
+
+enum TicketStatus {
+    OPEN
+    ASSIGNED
+    TESTING
+    RESOLVED
+}
+
+enum TicketPriority {
+    UNKNOWN
+    LOW
+    MEDIUM
+    HIGH
+    CRITICAL
+}
+
+type Ticket {
+    id: ID!
+    title: String!
+    description: String
+    type: TicketTypes!
+    status: TicketStatus!
+    priority: TicketPriority!
+    project: Project!
+    author: User!
+    assignedTo: User
+    comments: [Comment]
+    changeLog: [String]
+    creationDate: Date!
+    updateDate: Date!
+}
+
+enum UserType {
+    ADMIN
+    PROJECT_MANAGER
+    PROGRAMMER
+    TESTER
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    type: UserType!
+    ticketsAuthored: [Ticket]
+    createdProjects: [Project]
+    assignedTickets: [Ticket]
+    comments: [Comment] # Remove this
+    associatedProjects: [Project]
+    creationDate: Date!
+    updateDate: Date!
+}
+
+type Comment {
+    id: ID!
+    message: String!
+    creationDate: Date!
+    author: User!
+    ticket: Ticket!
+}
+
+type Query {
+    project(id: ID!): Project
+    ticket(id: ID!): Ticket
+    user(id: ID!): User
+    allProjects: [Project!]
+    allUsers: [User!]
+}
+
+type Mutation {
+    # Project related mutations
+    createProject(authorID: ID!, data: ProjectCreateInput!): Project
+    updateProject(projectID: ID!, data: ProjectUpdateInput!): Project
+    addProjectAssociatedUsers(projectID: ID!, associatedUserID: ID!): Project
+    # Ticket related mutations
+    createTicket(authorID: ID!, projectID: ID!, data: TicketCreateInput!): Ticket
+    updateTicket(ticketID: ID!, data: TicketUpdateInput!): Ticket
+    assignTicket(ticketID: ID!, userID: ID!): Ticket
+    addTicketComment(authorID: ID!, ticketID: ID!, comment: String!): Comment
+    addTicketChangeLog(ticketID: ID!, changeLog: String!): Ticket
+    # User related mutations
+    createUser(data: UserCreateInput!): User
+    updateUser(data: UserUpdateInput): User
+}
+
+input ProjectCreateInput {
+    title: String!
+    description: String
+}
+
+input ProjectUpdateInput {
+    description: String
+}
+
+input TicketCreateInput {
+    title: String!
+    description: String
+    type: TicketTypes!
+    status: TicketStatus!
+    priority: TicketPriority!
+    assignedTo: ID
+}
+
+input TicketUpdateInput {
+    description: String
+    type: TicketTypes
+    status: TicketStatus
+    priority: TicketPriority
+}
+
+input UserCreateInput {
+    name: String!
+    email: String!
+    type: UserType!
+}
+
+input UserUpdateInput {
+    # Doubles as user updater
+    name: String
+    email: String
+    type: UserType
+}

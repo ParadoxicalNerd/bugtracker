@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Project {
+  id          String @id @default(uuid())
+  name        String
+  description String
+
+  creationDate DateTime @default(now())
+  updateDate   DateTime @default(now()) @updatedAt
+
+  // Project Author
+  author   User   @relation("ProjectAuthor", fields: [authorID], references: [id])
+  authorID String
+
+  // Users associated with project
+  associatedUsers User[] @relation("ProjectAssociatedUsers")
+
+  // Tickets associated with project
+  tickets Ticket[] @relation("ProjectTickets")
+}
+
+enum TicketTypes {
+  BUG
+  FEATURE
+  DOCS
+}
+
+enum TicketStatus {
+  OPEN
+  ASSIGNED
+  TESTING
+  RESOLVED
+}
+
+enum TicketPriority {
+  UNKNOWN
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model Ticket {
+  id          String         @id @default(uuid())
+  title       String
+  description String
+  type        TicketTypes
+  status      TicketStatus
+  priority    TicketPriority
+  changeLog   String[]
+
+  creationDate DateTime @default(now())
+  updateDate   DateTime @default(now()) @updatedAt
+
+  // Project ticket belongs to
+  project   Project @relation("ProjectTickets", fields: [projectID], references: [id])
+  projectID String
+
+  // Author of ticket
+  author   User   @relation("TicketAuthor", fields: [authorID], references: [id])
+  authorID String
+
+  // Ticket assigned to
+  assignedTo   User?   @relation("TicketAssignedTo", fields: [assignedToID], references: [id])
+  assignedToID String?
+
+  // Comments
+  comments Comment[] @relation("CommentsOfTicket")
+}
+
+enum UserType {
+  ADMIN
+  PROJECT_MANAGER
+  PROGRAMMER
+  TESTER
+}
+
+model User {
+  id    String   @id @default(uuid())
+  name  String
+  email String
+  type  UserType
+
+  creationDate DateTime @default(now())
+  updateDate   DateTime @default(now()) @updatedAt
+
+  ticketsAuthored    Ticket[]  @relation("TicketAuthor")
+  createdProjects    Project[] @relation("ProjectAuthor")
+  comments           Comment[] @relation("CommentAuthor")
+  associatedProjects Project[] @relation("ProjectAssociatedUsers")
+  assignedTickets    Ticket[]  @relation("TicketAssignedTo")
+}
+
+model Comment {
+  id      String @id @default(uuid())
+  message String
+
+  creationDate DateTime @default(now())
+
+  // Author of comment
+  author   User   @relation("CommentAuthor", fields: [authorID], references: [id])
+  authorID String
+
+  // Ticket comment is associated to
+  ticket   Ticket @relation("CommentsOfTicket", fields: [ticketID], references: [id])
+  ticketID String
+}
