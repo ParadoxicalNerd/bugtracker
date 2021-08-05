@@ -136,10 +136,10 @@ app.use("/hi", (req, res) => {
     res.send({ message: "hello" });
 });
 
-app.use(express.static(path.join(__dirname, "..", "/bugtracker-frontend/build/")));
+app.use(express.static(path.join(__dirname, "..", "/react-ui/build/")));
 
 app.get("/*", function (req, res) {
-    res.sendFile(path.join(__dirname, "..", "/bugtracker-frontend/build/"), function (err) {
+    res.sendFile(path.join(__dirname, "..", "/react-ui/build/"), function (err) {
         if (err) {
             res.status(500).send(err);
         }
