@@ -21,7 +21,7 @@
         },
         "AUTH0_CALLBACK_URL": {
             "description": "Constants needed for successful Auth",
-            "value": "http://localhost:4000/callback"
+            "value": "https://murmuring-shore-99299.herokuapp.com/callback"
         },
         "HOMEPAGE_URL ": {
             "description": "Constants needed for successful Auth",
