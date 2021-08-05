@@ -1,0 +1,3 @@
+[submodule "react-ui"]
+	path = react-ui
+	url = https://github.com/ParadoxicalNerd/bugtracker-frontend
