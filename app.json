@@ -1,21 +1,52 @@
 {
-  "name": "heroku-cra-node",
-  "description": "web app made of create-react-app UI + Node API",
-  "scripts": {
-  },
-  "env": {
-  },
-  "formation": {
-    "web": {
-      "quantity": 1
-    }
-  },
-  "addons": [
-
-  ],
-  "buildpacks": [
-    {
-      "url": "heroku/nodejs"
-    }
-  ]
+    "name": "heroku-cra-node",
+    "description": "web app made of create-react-app UI + Node API",
+    "scripts": {},
+    "env": {
+        "AUTH0_CLIENT_ID": {
+            "description": "Client ID generated during AUTH0 setup",
+            "value": "YjHLYqwo1G7hNNhhTPvt76R2VTmHfPO7"
+        },
+        "AUTH0_DOMAIN": {
+            "description": "AUTH0_DOMAIN generated during AUTH0 setup",
+            "value": "dev-7h7q9alz.eu.auth0.com"
+        },
+        "AUTH0_CLIENT_SECRET": {
+            "description": "AUTH0_CLIENT_SECRET generated during AUTH0 setup",
+            "value": "8dZ611_x0NTPvc0Osb0SZoiIFMGtAx3PfUeQ0b2z71weT41p1Yt0e3lUmjXk9Q3L"
+        },
+        "SESSION_SECRET": {
+            "description": "Random session secret",
+            "generator": "random"
+        },
+        "AUTH0_CALLBACK_URL": {
+            "description": "Constants needed for successful Auth",
+            "value": "http://localhost:4000/callback"
+        },
+        "HOMEPAGE_URL ": {
+            "description": "Constants needed for successful Auth",
+            "value": "/"
+        }
+    },
+    "formation": {
+        "web": {
+            "quantity": 1
+        }
+    },
+    "addons": [
+        {
+            "plan": "heroku-postgresql:hobby-dev"
+        },
+        {
+            "plan": "heroku-redis:hobby-dev"
+        }
+    ],
+    "buildpacks": [
+        {
+            "url": "https://github.com/dmathieu/heroku-buildpack-submodules"
+        },
+        {
+            "url": "heroku/nodejs"
+        }
+    ]
 }
